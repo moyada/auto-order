@@ -1,4 +1,5 @@
 unzip pyppeteer.zip
+
 python3 -m pip install -U pyppeteer
 
 pip3 install websockets==8.1 --force-reinstall
