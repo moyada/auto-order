@@ -11,10 +11,6 @@ import config
 import tools
 
 
-# 模拟手机登陆
-excludeSwitches = {"deviceMetrics": '{"width": 320, "height": 640, "pixelRatio": 3.0}',
-          "userAgent": 'Mozilla/5.0 (Linux; Android 4.1.1; GT-N7100 Build/JRO03C) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/35.0.1916.138 Mobile Safari/537.36 T7/6.3'}
-
 browser = Browser
 context = BrowserContext
 page = Page
@@ -46,11 +42,9 @@ async def goto(target: str, timeout=3000):
 
 
 async def login():
-    if await fetch('//*[@id="J_LoginBox"]/div[1]/div[1]', timeout=3000):
-        await click('//*[@id="J_LoginBox"]/div[1]/div[1]')
-    await type_input('//*[@id="TPL_username_1"]', config.username)
-    await type_input('//*[@id="TPL_password_1"]', config.password)
-    await click('//*[@id="J_SubmitStatic"]')
+    await type_input('//*[@id="username"]', config.username)
+    await type_input('//*[@id="password"]', config.password)
+    await click('//*[@id="btn-submit"]')
     print('登陆账号')
 
 

@@ -2,7 +2,7 @@ import time
 import config
 import tools
 import url
-import dominator
+import dominator_mobile as dt
 
 import asyncio
 from pyppeteer import launch
@@ -21,28 +21,30 @@ async def test():
 
 
 async def main():
-    await dominator.init()
+    await dt.init()
 
-    await dominator.goto(url.login, timeout=5000)
-    await dominator.login()
+    await dt.goto(url.login, timeout=5000)
+    await dt.login()
 
-    await dominator.goto(config.sku)
-    await dominator.wait_putaway()
+    await asyncio.sleep(3000)
 
-    has_remain = await dominator.has_remain()
+    await dt.goto(config.sku)
+    await dt.wait_putaway()
+
+    has_remain = await dt.has_remain()
     if not has_remain:
         print('抢购失败')
-        await dominator.close()
+        await dt.close()
         return
 
     # await dominator.choose()
-    await dominator.amount()
+    await dt.amount()
 
-    await dominator.order()
-    await dominator.buy()
+    await dt.order()
+    await dt.buy()
 
     await asyncio.sleep(3)
-    await dominator.close()
+    await dt.close()
 
 
 if __name__ == '__main__':
