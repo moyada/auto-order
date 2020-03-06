@@ -1,15 +1,14 @@
 import asyncio
 import datetime
 
-import config
-import url
+from config import system, order
 
 
 def get_wait() -> int:
-    if config.debug:
+    if system.debug:
         return 3
     t1 = datetime.datetime.now()
-    t2 = datetime.datetime.strptime(config.time, "%Y-%m-%d %H:%M:%S")
+    t2 = datetime.datetime.strptime(order.time, "%Y-%m-%d %H:%M:%S")
     wait_time = (t2 - t1).seconds
     return wait_time
 
@@ -20,12 +19,3 @@ def sync_run(func):
 
 def sync_call(future):
     return asyncio.ensure_future(future)
-
-
-def is_main_page(s: str):
-    return s.startswith(url.login)
-
-
-if __name__ == '__main__':
-    print(bool(1 - True))
-    print(bool(1 - False))
