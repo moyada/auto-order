@@ -6,6 +6,11 @@ from dominator._base import BaseDominator
 
 class PlatformDominator(BaseDominator):
 
+    async def is_login(self) -> bool:
+        await self.goto(target=system.mobile_main_url, timeout=5000)
+        await asyncio.sleep(3)
+        return not await self.fetch('/html/body/div[2]/div')
+
     async def login(self):
         await self.goto(target=system.mobile_login_url, timeout=5000)
         await self.type_input('//*[@id="username"]', user.username)

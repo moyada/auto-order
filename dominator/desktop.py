@@ -6,6 +6,9 @@ from dominator._base import BaseDominator
 
 class PlatformDominator(BaseDominator):
 
+    async def is_login(self) -> bool:
+        return False
+
     async def login(self):
         await self.goto(target=system.desktop_login_url, timeout=5000)
         if await self.fetch('//*[@id="J_LoginBox"]/div[1]/div[1]', timeout=3000):

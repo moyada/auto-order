@@ -12,11 +12,16 @@ from dominator._base import BaseDominator
 async def test():
     browser = await launch(headless=bool(1 - system.debug),
                            userDataDir=system.userDataDir,
-                           args=['--disable-infobars'])
+                           args=['--disable-infobars', '--start-fullscreen'])
     page = await browser.newPage()
     await page.setViewport({'width': system.width, 'height': system.height})
     await page.goto(url.login)
     await page.evaluate('''() =>{ Object.defineProperties(navigator,{ webdriver:{ get: () => false } }) }''')
+
+    await asyncio.sleep(3)
+    await page.evaluate('$("body").trigger($.Event("press", { keyCode: 123}));')
+    print('press')
+    await page.keyboard.press('F12')
     await asyncio.sleep(100)
     await browser.close()
 
@@ -41,13 +46,13 @@ def get_dominator() -> BaseDominator:
 # @asyncio.coroutine
 async def main():
     async with get_dominator() as dominate:
-        await dominate.login()
+        if not await dominate.is_login():
+            await dominate.login()
         # await dominate.move(0, 100)
         print('登陆账号')
-        await asyncio.sleep(2)
         await dominate.goto(order.sku)
-        await dominate.wait_putaway()
 
+        await dominate.wait_putaway()
         print('开始抢购')
         has_remain = await dominate.has_remain()
         if has_remain:
@@ -59,9 +64,8 @@ async def main():
         else:
             print('抢购失败')
 
-        await asyncio.sleep(2)
-        await dominate.goto(order.sku)
-        await asyncio.sleep(30000)
+        await asyncio.sleep(10)
+
 
 # https://python3-cookbook.readthedocs.io/zh_CN/latest/c13/p03_parsing_command_line_options.html
 # https://juejin.im/post/5c6958fd6fb9a049ff4eab60

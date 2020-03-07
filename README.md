@@ -6,7 +6,9 @@ python3 -m pip install -U pyppeteer
 
 pip3 install websockets==8.1 --force-reinstall
 
-python3 main.py --sku detail.m.tmall.com/item.htm?id=528351172546 --time 2020-03:05 12:00:00
+python3 main.py
+
+* 频繁操作容易进入风控
 
 > https://miyakogi.github.io/pyppeteer/reference.html
 >

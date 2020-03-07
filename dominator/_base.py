@@ -5,6 +5,7 @@ from typing import Optional
 from pyppeteer import launch
 from pyppeteer.browser import Browser, BrowserContext
 from pyppeteer.element_handle import ElementHandle
+from pyppeteer.input import Keyboard
 from pyppeteer.page import Page
 
 import tools
@@ -21,9 +22,11 @@ class BaseDominator:
 
     async def __aenter__(self):
         self.browser = await launch(headless=False,  # headless=bool(1 - config.debug),
+                                    devtools=True,
                                     userDataDir=system.userDataDir,
-                                    args=['--disable-infobars'])
-        self.context = await self.browser.createIncognitoBrowserContext()
+                                    args=['--disable-infobars', '--no-sandbox'])
+        self.context = self.browser
+        # self.context = await self.browser.createIncognitoBrowserContext()
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
@@ -114,6 +117,9 @@ class BaseDominator:
         return (now - putaway_time).seconds > 3
 
     async def is_sold_out(self) -> bool:
+        pass
+
+    async def is_login(self) -> bool:
         pass
 
     async def login(self):
